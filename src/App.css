@@ -1,0 +1,23 @@
+main 
+{
+  min-height: 80vh;
+}
+
+
+body
+{
+    background-color: rgb(102, 26, 26);
+}
+
+
+.p-img
+{
+  padding-top: 80px ;
+  width: 400px;
+}
+
+.list-group 
+{
+  padding: 8rem;
+  margin-left: 2rem;
+}
