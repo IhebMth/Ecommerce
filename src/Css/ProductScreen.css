@@ -1,0 +1,32 @@
+.p-img
+{
+  padding-top: 80px ;
+  width: 400px;
+}
+
+.list-group 
+{
+  padding: 6rem;
+  margin-left: 2rem;
+  
+}
+
+.btnAdt
+{
+  align-content: center;
+}
+
+.Cart
+{
+  padding-top: 8px;
+  box-shadow: 0 10px 10px 0 rgba(136, 144, 195, 0.2),
+      0 5px 15px 0 rgba(16, 38, 201, 0.15);
+    border-radius: 15px;
+    margin: 3px;
+
+}
+
+.cart-group{
+ padding: 10px;
+ margin-top: 10px;
+}
