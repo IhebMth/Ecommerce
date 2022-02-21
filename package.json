@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "MERN shopping cart app ",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node backend/server",
-    "server" : "nodemon backend/server",
-    "client" : "npm start --prefix frontend"
+    "start": "concurrently \"npm run server\"  \"cd ./frontend && npm start\"",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "homepage": "https://github.com/IhebMth/Ecommerce#readme",
   "dependencies": {
     "axios": "^0.26.0",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3"
   },
   "devDependencies": {
