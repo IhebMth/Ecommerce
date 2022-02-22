@@ -7,7 +7,10 @@
 .section_our_solution
 {
     background-color: #000203;
-}
+    margin: 20px;
+    margin-top: 50px;
+
+  }
 
 .our_solution_category {
     color: #1a72f7;
@@ -24,21 +27,25 @@
   }
   .solution_cards_box .solution_card {
     flex: 0 50%;
-    background: #fff;
-    box-shadow: 0 10px 10px 0 rgba(136, 144, 195, 0.2),
-      0 5px 15px 0 rgba(16, 38, 201, 0.15);
-    border-radius: 15px;
-    margin: 3px;
-    padding: 10px 15px;
-    position: relative;
+    background: rgb(127, 24, 230);
+    box-shadow: 0 10px 10px 0 rgba(34, 57, 206, 0.2),
+      0 2px 15px 0 rgba(20, 20, 214, 0.952);
+    border-radius: 20px;
+    margin: 10px;
+    
+    padding: 10px 15x;
+    position:relative;
+  
     z-index: 1;
     overflow: hidden;
     min-height: 460px;
+    
     transition: 0.7s;
   }
   
   .solution_cards_box .solution_card:hover {
     background: aqua;
+    padding: 10px;
     color: rgb(182, 18, 18);
     transform: scale(1.1);
     z-index: 9;
@@ -82,4 +89,10 @@
     margin-left: 20%;
     inline-size: 1;
     
+  }
+
+
+  .solution_card .product_title
+  {
+      min-height: 90px;
   }

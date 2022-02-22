@@ -33,6 +33,7 @@ const ProductScreen = () =>
 
               <ReactImageMagnify {...{
                   smallImage: {
+                      value:'',
                     alt: product.name,
                     isFluidWidth: true,
                     src: product.image
