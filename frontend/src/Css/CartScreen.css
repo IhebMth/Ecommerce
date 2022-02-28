@@ -1,0 +1,20 @@
+.Cart
+{
+    
+
+    box-shadow: 0 10px 10px 0 rgba(136, 144, 195, 0.2),
+        0 5px 15px 0 rgba(16, 38, 201, 0.15);
+      border-radius: 15px;
+      margin: 60px;
+      margin-top: 50px;
+      width: 400px;
+     margin-top: 1px;
+     ; 
+      
+    
+}
+
+.btn-block
+{
+  margin-left: 35%
+}

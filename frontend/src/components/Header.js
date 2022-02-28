@@ -1,6 +1,7 @@
 import React from "react"
 import { LinkContainer } from "react-router-bootstrap"
 import { Navbar, Nav, Container} from "react-bootstrap"
+
 const Header = () =>
 {
 return(
@@ -18,7 +19,7 @@ return(
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
      
-      <LinkContainer to='/Cart'>
+      <LinkContainer to='/cart'>
         <Nav.Link >
           <i className="fas fa-shopping-cart"></i> Cart
         </Nav.Link>
