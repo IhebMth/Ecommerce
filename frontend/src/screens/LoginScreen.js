@@ -17,7 +17,7 @@ const LoginScreen = () => {
     const { loading, error, userInfo } = userLogin
 
     const location = useLocation()
-    const redirect = location.search  ? location.search.split('=')[1] : '/';
+    const redirect = location.search ? location.search.split('=') [1] : '/';
 
     
     const history = useNavigate()
@@ -25,18 +25,19 @@ const LoginScreen = () => {
         
         if(userInfo)
         {
-           history({redirect})
-           console.log(location)   
+           history(redirect)
+           
            
            
         }
     }, [history, userInfo, redirect])
 
     const submitHandler = (e) =>
-    {
+    {            
+
         e.preventDefault()
         dispatch(login(email, password))
-        if (!userLogin.error) {history('/')}
+        
         
         
     }
@@ -77,8 +78,8 @@ return <FormContainer>
 
     <Row className='py-3'>
         <Col>
-        New Costemer?{' '}
-        <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
+        New Costumer?{' '}
+      <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} >
             Register
         </Link>
         </Col>

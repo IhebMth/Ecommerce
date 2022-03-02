@@ -22,7 +22,7 @@ useEffect(() =>
         console.log(location)
         dispatch(addToCart(productId, qty))
     }
-}, [dispatch, productId, qty])
+}, [dispatch, productId, qty,location])
     
 const removeFromCartHandler = (id) => 
 {
