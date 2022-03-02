@@ -19,6 +19,7 @@ useEffect(() =>
 {
     if (productId)
     {
+        console.log(location)
         dispatch(addToCart(productId, qty))
     }
 }, [dispatch, productId, qty])
