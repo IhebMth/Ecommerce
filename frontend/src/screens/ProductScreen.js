@@ -22,16 +22,17 @@ const ProductScreen = () =>
     
     useEffect(() => 
     {
-    dispatch(listProductsDetails(num.id))
-    }, [dispatch])
+    dispatch(listProductsDetails(num.id)) }, [dispatch, num.id]) 
+
+    // eslint-disable-next-line
    
     const addToCartHandler = () => {
         history(`/cart/${num.id}?qty=${qty}`)}
 
-   
+        // eslint-disable-next-line
 
     //const product = products.find((p) => p._id === num.id)
-   
+    
     return(
         <>
         <Link className='btn btn-dark my-3' to='/'>
@@ -129,10 +130,10 @@ const ProductScreen = () =>
                     <ListGroup.Item>
                         <Button 
                           onClick={addToCartHandler}
-                          className='btn-block'
+                          className='btn-block btnAdt'
                           type='Button'
                           disabled={product.countInStock === 0}  
-                          className='btnAdt'> Add to Cart 
+                          > Add to Cart 
                         </Button> 
                     </ListGroup.Item>
             </ListGroup> 

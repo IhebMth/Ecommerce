@@ -6,11 +6,11 @@ import { Row, Col, ListGroup, Image, Form, Button, Card, ListGroupItem} from 're
 import Message from '../components/Message'
 import { addToCart, removeFromCart } from "../actions/cartActions";
 
-const CartScreen = ({}) => {
+const CartScreen = () => {
 const location = useLocation()
 const num = useParams() 
 const productId = num.id 
-const qty = location.search ? Number(location.search.split('=') [1]) : 1
+const qty = location.search ? Number(location.search.split('=')[1]) : 1
 const dispatch = useDispatch()
 const cart = useSelector((state) => state.cart)
 const { cartItems } = cart
@@ -19,7 +19,7 @@ useEffect(() =>
 {
     if (productId)
     {
-        console.log(location)
+       
         dispatch(addToCart(productId, qty))
     }
 }, [dispatch, productId, qty,location])

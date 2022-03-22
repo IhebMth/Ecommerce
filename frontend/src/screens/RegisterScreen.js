@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useReducer} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Form, Button, Row, Col} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,7 +17,7 @@ const RegisterScreen = () => {
     const dispatch = useDispatch()
     
 
-    const userRegister = useSelector(state => state.userLogin)
+    const userRegister = useSelector(state => state.userRegister)
     const { loading, error, userInfo } = userRegister
 
     const location = useLocation()
@@ -34,11 +34,12 @@ const RegisterScreen = () => {
            
            
         }
+
     }, [history, userInfo, redirect])
 
     const submitHandler = (e) =>
     {            
-
+       
         e.preventDefault()
         if(password !== confirmPassword)
         {
@@ -47,7 +48,7 @@ const RegisterScreen = () => {
        dispatch(register(name, email, password))
         }
         
-        
+       
     }
 
   
@@ -57,7 +58,8 @@ const RegisterScreen = () => {
 return <FormContainer>
    <h1>Sign Up</h1>  
    {message && <Message variant='danger'>{message}</Message>}
-   {error && <Message variant='danger'>{error}</Message>}
+   { error &&  <Message variant='danger'>{error} </Message>}
+   
    {loading && <Loader />}
    <Form onSubmit={submitHandler}>
        

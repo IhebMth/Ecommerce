@@ -35,15 +35,11 @@ const  orderSchema = mongoose.Schema(
             adress: {type:String, required: true},
             city: {type:String, required: true},
             postalCode: {type:String, required: true},
-            coutry: {type:String, required: true}
-       
+            country: {type:String, required: true}
+            
         },
 
-        paymentMethod: 
-        {
-            type: String,
-            required: true
-        },
+        
 
         paymentResult: 
         {
@@ -81,19 +77,7 @@ const  orderSchema = mongoose.Schema(
             default: 0.0
         },
 
-        totalPrice: 
-        {
-            type: Boolean,
-            required: true,
-            default: false
-        },
-
-        totalPrice: 
-        {
-            type: Boolean,
-            required: true,
-            default: false
-        },
+       
 
         paidAt: 
         {
@@ -124,6 +108,6 @@ const  orderSchema = mongoose.Schema(
     
 ) 
 
-const Order = mongoose.model('Order', orderSchema)
+const order = mongoose.model('Order', orderSchema)
 
-export default Order
+export default order

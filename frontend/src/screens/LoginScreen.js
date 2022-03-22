@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useReducer} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Form, Button, Row, Col} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,7 +17,7 @@ const LoginScreen = () => {
     const { loading, error, userInfo } = userLogin
 
     const location = useLocation()
-    const redirect = location.search ? location.search.split('=') [1] : '/';
+    const redirect = location.search ? location.search.split('=')[1] : '/';
 
     
     const history = useNavigate()
