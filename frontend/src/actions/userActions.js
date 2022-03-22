@@ -229,14 +229,6 @@ export const deleteUser = (id) => async (dispatch, getState) => {
             type: USER_DELETE_SUCCESS
         })
 
-        const { data } =
-        await axios.get(`/api/users`,
-            config)
-
-    dispatch({
-        type: USER_LIST_SUCCESS,
-        payload: data
-    })
 
 
 

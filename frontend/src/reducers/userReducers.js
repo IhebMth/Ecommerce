@@ -121,7 +121,7 @@ export const userDeleteReducer = (state = { }, action) =>
         return { loading: true }
 
         case USER_DELETE_SUCCESS : 
-        return { loading: false, sucess: true  }
+        return { loading: false, success: true  }
          
         case USER_DELETE_FAIL :
         return { loading: false, error: action.payload }
@@ -143,13 +143,13 @@ export const userUpdateReducer = (state = {user:{ }}, action) =>
         return { loading: true }
 
         case USER_UPDATE_SUCCESS : 
-        return { loading: false, sucess: true  }
+        return { loading: false, success: true  }
          
         case USER_UPDATE_FAIL :
         return { loading: false, error: action.payload }
          
         case USER_UPDATE_RESET : 
-        return { users: {} }
+        return { user: {} }
 
         default: 
         return state
