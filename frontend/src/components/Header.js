@@ -1,10 +1,15 @@
 import React from "react"
 import { LinkContainer } from "react-router-bootstrap"
 import { Navbar, Nav, Container, NavDropdown,  } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector} from "react-redux"
+import { Route, Routes, useNavigate } from "react-router-dom"
+import SearchBox from "./SearchBox"
 import { logout } from '../actions/userActions'
+
+
 const Header = () =>
 {
+  const history = useNavigate()
   const dispatch = useDispatch()
  
   const userLogin = useSelector(state => state.userLogin)
@@ -18,7 +23,7 @@ const Header = () =>
   return(
     <header>
        <div className="row">
-       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+       <Navbar style={{backgroundColor: '#E7E7E7'}} variant="light" expand="lg" collapseOnSelect>
   <Container>
   
   <LinkContainer to='/'>
@@ -29,6 +34,14 @@ const Header = () =>
     <div className="col-md-3 ">
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
+    <Routes>
+    <Route path="/" element={<SearchBox history={history} />} />
+    <Route path="/search/:keyword" element={<SearchBox history={history} />} />
+    <Route path="/page/:pageNumber" element={<SearchBox history={history} />} />
+    <Route path='/search/:keyword/page/:pageNumber' element={<SearchBox history={history} />} />
+      
+      </Routes> 
+           
      
       <LinkContainer to='/cart'>
         <Nav.Link >
@@ -69,7 +82,7 @@ const Header = () =>
               </NavDropdown.Item>
            </LinkContainer>
 
-           <LinkContainer to='/admin/orderList'>
+           <LinkContainer to='/admin/orderlist'>
             <NavDropdown.Item>
               Orders
               </NavDropdown.Item>

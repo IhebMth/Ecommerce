@@ -88,7 +88,7 @@ const updateUserProfile = asyncHandler(async(req, res) => {
 // @access Public
 
 const registerUser = asyncHandler(async(req, res) => {
-  const {name, email, password } = req.body
+  const {name, email, password,isAdmin } = req.body
 
 const userExists = await User.findOne({email})
 if (userExists)
@@ -100,7 +100,8 @@ if (userExists)
 const user = await User.create ({
   name,
   email,
-  password
+  password,
+  isAdmin
 })
 
 if (user)

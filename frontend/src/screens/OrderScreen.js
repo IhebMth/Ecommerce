@@ -1,42 +1,67 @@
 import React, { useEffect } from 'react'
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
+import { Link,  useNavigate,  useParams } from 'react-router-dom'
 import { useDispatch, useSelector, } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { getOrderDetails } from '../actions/orderActions'
-
-
+import { getOrderDetails,  deliverOrder } from '../actions/orderActions'
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
+import '../Css/orderScreen.css'
+ 
 
 
 const OrderScreen = () => {
     const num = useParams()
     const orderId = num.id
 
-    const dispatch = useDispatch()
-    const history = useNavigate()
+    const history= useNavigate()
+    const dispatch = useDispatch() 
+    
+
+    
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
 
     const orderDetails = useSelector((state) => state.orderDetails)
     const { order, loading, error } = orderDetails
 
-    if (!loading)
+    const orderPay = useSelector((state) => state.orderPay)
+    const {  success: successPay } = orderPay 
+
+    const orderDeliver = useSelector((state) => state.orderDeliver)
+    const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+
+    if (!loading) 
     {
         //calculate prices 
-order.itemsPrice = order.orderItems.reduce(
+    order.itemsPrice = order.orderItems.reduce(
     (acc, item) => acc + item.price * item.qty, 
     0 
 )
 
-const addDecimals = (num) => 
+/*const addDecimals = (num) => 
 {
      return (Math.round(num * 100) / 100 ).toFixed(2)
-}
+}*/
 
     }
 
+
     useEffect(() => {
+        if (!userInfo)
+        {
+            history('/login')
+        }
+        if (!order || successPay || successDeliver){
+            dispatch({type: ORDER_PAY_RESET})
+            dispatch({type: ORDER_DELIVER_RESET})
         dispatch(getOrderDetails(orderId))
-    }, [dispatch, orderId])
+        }
+    }, [dispatch, history, order, orderId, successDeliver, successPay, userInfo])
+
+const deliverHandler = () => {
+    dispatch(deliverOrder(order))
+}
 
     return loading ? <Loader /> : error ? <Message variant='danger'>{error}
     </Message> : <>
@@ -58,7 +83,7 @@ const addDecimals = (num) =>
                         </p>
 
                         {order.isDelivered ? (
-                        <Message variant='sucess'> Delivered on {order.deliveredAt}</Message> 
+                        <Message variant='success'> Delivered on {order.deliveredAt}</Message> 
                     ):( <Message variant='danger'>Not delivered</Message> 
                     )}
 
@@ -71,12 +96,12 @@ const addDecimals = (num) =>
                         {order.paymentMethod}
                         </p>
                         {order.isPaid ? (
-                        <Message variant='sucess'>Paid on {order.paidAt}</Message> 
+                        <Message variant='success'>Paid on {order.paidAt}</Message> 
                     ):( <Message variant='danger'>Not Paid</Message> 
                     )}
                     
                         </ListGroup.Item>
-
+                            <Card>
                     <ListGroup.Item>
                         <h2>Order Items</h2>
                         {order.orderItems.length === 0 ?
@@ -110,13 +135,19 @@ const addDecimals = (num) =>
                         }
 
                     </ListGroup.Item>
+                    </Card>
                 </ListGroup>
             </Col>
 
             <Col md={4}>
-                <Card>
-                    <ListGroup vairant='flush'>
-                        <ListGroup.Item>
+  
+                    <ListGroup vairant='flush'
+                    style = {{border: "2px solid #0C3E35", marginTop:'100px'}}
+                    >
+                        
+                        <ListGroup.Item 
+                        
+                        >
                             <h2>Order Summary</h2>
                         </ListGroup.Item>
 
@@ -146,10 +177,23 @@ const addDecimals = (num) =>
                                 <Col>Total</Col>
                                 <Col>${order.totalPrice}</Col>
                             </Row>
-                        </ListGroup.Item>               
 
+                        </ListGroup.Item>          
+                                {loadingDeliver && <Loader />}     
+                                {userInfo && userInfo.isAdmin && order.isPaid &&  !order.isDelivered && (
+                                    <ListGroup.Item  className="delivered-btn">
+                                        <Button type='button' 
+                                        className="btn btn-block delivered-btn" 
+                                        style={{margin: '28px', border: '2px solid black', borderRadius: '20px'}}
+                                        onClick={deliverHandler} > 
+                                            <b>Mark as Delivered</b>
+                                        </Button>
+                                    </ListGroup.Item>
+                                
+                                )}
+                                
                     </ListGroup>
-                </Card>
+                   
 
             </Col>
 

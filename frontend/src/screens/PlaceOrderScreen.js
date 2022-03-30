@@ -43,7 +43,7 @@ useEffect(() => {
         history(`/order/${order._id}`)
         // eslint-disable-next-line
     }
-}, [success, history])
+}, [success, history, order])  
 
     const placeOrederHandler = () =>
     {

@@ -1,152 +1,234 @@
-import React, { useState, useEffect} from 'react'
-import {useDispatch, useSelector } from 'react-redux'
-import { Link, useParams, useNavigate}  from 'react-router-dom'
-import { Row, Col, Form, ListGroup, Card, Button, ListGroupItem} from 'react-bootstrap'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Row, Col, Form, ListGroup, Card, Button, ListGroupItem } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listProductsDetails } from '../actions/productActions'
+import Meta from '../components/Meta'
+import { listProductsDetails, createProductReview } from '../actions/productActions'
 import '../Css/ProductScreen.css'
 import ReactImageMagnify from 'react-image-magnify'
+import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 
-
-const ProductScreen = () =>
-{
-     const history = useNavigate()
+const ProductScreen = () => {
+    const history = useNavigate()
     const [qty, setQty] = useState(1)
+    const [rating, setRating] = useState(0)
+    const [comment, setComment] = useState("")
+
+
     const dispatch = useDispatch()
     const num = useParams()
 
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
+
     const productDetails = useSelector(state => state.productDetails)
-    const {loading, error, product} = productDetails
-    
-    useEffect(() => 
-    {
-    dispatch(listProductsDetails(num.id)) }, [dispatch, num.id]) 
+    const { loading, error, product } = productDetails
+
+    const productReviewCreate = useSelector(state => state.productReviewCreate)
+    const {
+        success: successProductReview,
+        error: errorProductReview }
+        = productReviewCreate
+
+    useEffect(() => {
+        if(successProductReview)
+        {
+            alert('Review Submitted!')
+            setRating(0)
+            setComment('')
+            dispatch({ type: PRODUCT_CREATE_REVIEW_RESET})
+        }
+        dispatch(listProductsDetails(num.id))
+    }, [dispatch, num.id, successProductReview])
 
     // eslint-disable-next-line
-   
+
     const addToCartHandler = () => {
-        history(`/cart/${num.id}?qty=${qty}`)}
+        history(`/cart/${num.id}?qty=${qty}`)
+    }
 
-        // eslint-disable-next-line
+    const submitHandler = (e) => {
+            e.preventDefault()
+            dispatch(createProductReview(num.id,{
+                rating, 
+                comment
+            }))
+    } 
 
-    //const product = products.find((p) => p._id === num.id)
-    
-    return(
+
+
+    return (
         <>
-        <Link className='btn btn-dark my-3' to='/'>
-        Go Back
-        </Link>
-        {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
-            <Row>
-            <Col md={3} >
-            <div className="perimeter">
-             <div className="image"> 
+            <Link className='btn btn-dark my-3' to='/'>
+                Go Back
+            </Link>
+            {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
+                <>
+                 <Meta title= {product.name} />
+                    <Row>
+                        <Col md={3} >
+                            <div className="perimeter">
+                                <div className="image">
 
-              <ReactImageMagnify {...{
-                  smallImage: {
-                      value:'',
-                    alt: product.name,
-                    isFluidWidth: true,
-                    src: product.image
-                },
-                  largeImage: {
-                     src: product.image,
-                     width: 800,
-                     height: 744
-                },
-                isHintEnabled: true
-                }} />
-                </div>
-                </div>
-            </Col>
-          
-            <Col md={5} className='product-adj'>
-                <ListGroup variant='flush' className='list-group'>
-                <ListGroupItem>
-                    <h3> {product.name}</h3>
-                </ListGroupItem>
-                    <Rating value = {product.rating} text={`${product.numReviews} reviews` }/>
-                
-                <ListGroupItem>
-                    Price: ${product.price}
-                </ListGroupItem>
+                                    <ReactImageMagnify {...{
+                                        smallImage: {
+                                            value: '',
+                                            alt: product.name,
+                                            isFluidWidth: true,
+                                            src: product.image
+                                        },
+                                        largeImage: {
+                                            src: product.image,
+                                            width: 800,
+                                            height: 744
+                                        },
+                                        isHintEnabled: true
+                                    }} />
+                                </div>
+                            </div>
+                        </Col>
 
-                <ListGroupItem>
-                    Description: ${product.description}
-                </ListGroupItem>
-                </ListGroup>
-            </Col>
+                        <Col md={5} className='product-adj'>
+                            <ListGroup variant='flush' className='list-group'>
+                                <ListGroupItem>
+                                    <h3> {product.name}</h3>
+                                </ListGroupItem>
+                                <Rating value={product.rating} text={`${product.numReviews} reviews`} />
 
-            <Col md={4} className="C-pad">
-               <Card className='Cart' fluid> 
-                <ListGroup variant='flush' className='cart-group'>
-                    <ListGroup.Item>
-                        <Row>
-                            <Col>
-                                Price:
-                            </Col>
+                                <ListGroupItem>
+                                    Price: ${product.price}
+                                </ListGroupItem>
 
-                            <Col>
-                                <strong> ${product.price}</strong>
-                            </Col>
-                        </Row>
-                    </ListGroup.Item>
+                                <ListGroupItem>
+                                    Description: ${product.description}
+                                </ListGroupItem>
+                            </ListGroup>
+                        </Col>
 
-                    <ListGroup.Item className='list-group-3'>
-                        <Row>
-                            <Col>
-                                Price:
-                            </Col>
+                        <Col md={4} className="C-pad">
+                            <Card className='Cart' fluid>
+                                <ListGroup variant='flush' className='cart-group'>
+                                    <ListGroup.Item>
+                                        <Row>
+                                            <Col>
+                                                Price:
+                                            </Col>
 
-                            <Col>
-                                {product.countInStock > 0 ? 'In stock' : 'Not in stock'} 
-                            </Col>
-                        </Row>
-                    </ListGroup.Item>
-                    {product.countInStock > 0  && (
-                    <ListGroupItem>
-                        <Row>
-                            <Col>Qty</Col>
-                            <Col>
-                            <Form>
-                                
-                                <input type= "number" min={1} max={product.countInStock} step={1} value={qty}
-                            onChange = {(e) => setQty(e.target.value)} />
-                
-                              {/*   <option >Select</option>
+                                            <Col>
+                                                <strong> ${product.price}</strong>
+                                            </Col>
+                                        </Row>
+                                    </ListGroup.Item>
+
+                                    <ListGroup.Item className='list-group-3'>
+                                        <Row>
+                                            <Col>
+                                                Price:
+                                            </Col>
+
+                                            <Col>
+                                                {product.countInStock > 0 ? 'In stock' : 'Not in stock'}
+                                            </Col>
+                                        </Row>
+                                    </ListGroup.Item>
+                                    {product.countInStock > 0 && (
+                                        <ListGroupItem>
+                                            <Row>
+                                                <Col>Qty</Col>
+                                                <Col>
+                                                    <Form>
+
+                                                        <input type="number" min={1} max={product.countInStock} step={1} value={qty}
+                                                            onChange={(e) => setQty(e.target.value)} />
+
+                                                        {/*   <option >Select</option>
                                 {[...Array(product.countInStock).keys()].map((x) => (
                                     <option key= { x + 1} value= {x + 1}>
                                         { x + 1}
                                     </option>
                                     
-                                )) */ } 
-                            </Form>
-                            </Col>
-                        </Row>
-                    </ListGroupItem>
-                    )}
-                    <ListGroup.Item>
-                        <Button 
-                          onClick={addToCartHandler}
-                          className='btn-block btnAdt'
-                          type='Button'
-                          disabled={product.countInStock === 0}  
-                          > Add to Cart 
-                        </Button> 
-                    </ListGroup.Item>
-            </ListGroup> 
-            </Card>       
-            </Col>
+                                )) */ }
+                                                    </Form>
+                                                </Col>
+                                            </Row>
+                                        </ListGroupItem>
+                                    )}
+                                    <ListGroup.Item>
+                                        <Button
+                                            onClick={addToCartHandler}
+                                            className='btn-block btnAdt'
+                                            type='Button'
+                                            disabled={product.countInStock === 0}
+                                        > Add to Cart
+                                        </Button>
+                                    </ListGroup.Item>
+                                </ListGroup>
+                            </Card>
+                        </Col>
+                    </Row>
 
-    </Row>
-        )}
-           
-    </>
-        
-    ) 
-                            
+                </>
+            )}
+
+            <Row>
+                <Col md={6}>
+                    <h2>Reviews</h2>
+                    {product.reviews.length === 0 && <Message>No Reviews</Message>}
+                <ListGroup variant='flush'>
+                    {product.reviews.map(review => (
+                        <ListGroupItem key={review._id}>
+                            <strong>{review.name}</strong>
+                            <Rating value ={review.rating}></Rating>
+                            <p>{review.createdAt.substring(0, 10)}</p>
+                            <p>{review.comment}</p>
+                        </ListGroupItem> 
+                    ))}
+             
+             <ListGroupItem >
+                    <h2>Write a Customer Review</h2>
+                    {errorProductReview && <Message variant="danger">{errorProductReview}</Message>}
+                    {userInfo ? (<Form onSubmit={submitHandler}>
+                        <Form.Group controlId= 'rating'>
+                        <Form.Label>Rating</Form.Label>
+                        <Form.Control as='select' value={rating} onChange={(e) => setRating(e.target.value)}
+                        >
+                            <option value=''> Select...</option>
+                            <option value='1'> 1 - Poor</option>
+                            <option value='2'> 2 - Fair</option>
+                            <option value='3'> 3 - Good</option>
+                            <option value='4'> 4 - Very Good</option>
+                            <option value='5'> 5 - Excellent</option>
+                           
+                        </Form.Control>
+                        </Form.Group>
+
+                        <Form.Group controlId='comment'>
+                            <Form.Label>Comment</Form.Label>
+                           <Form.Control as='textarea' row="3" value={comment} style={{resize:"none"}}
+                           onChange={(e) => setComment(e.target.value)}
+                           >
+                           </Form.Control>
+                        </Form.Group>
+                        <Button type='submit' variant='primary'>Submit</Button>
+                    </Form>
+                    ) : (
+                    <Message>  Please   
+                         <Link to='/login'> sign in</Link> to Write a review  {' '}
+                        </Message>
+                        )}
+                </ListGroupItem>
+                </ListGroup>
+             
+                </Col>
+
+            </Row>
+        </>
+
+    )
+
 
 }
 
